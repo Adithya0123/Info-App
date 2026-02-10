@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>MyApps - Adithya</title>
+    <meta name="theme-color" content="#0a0a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="data:application/json,{}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #7c6fff;
+            --primary-glow: rgba(124, 111, 255, 0.3);
+            --accent: #ff6b9d;
+            --accent-2: #00d4aa;
+            --accent-3: #ffa63e;
+            --bg-main: #08081a;
+            --bg-card: #12122a;
+            --bg-card-hover: #1a1a3a;
+            --bg-elevated: #1e1e40;
+            --bg-input: #0e0e28;
+            --text-white: #ffffff;
+            --text-primary: #e8e8f0;
+            --text-secondary: #8888aa;
+            --text-muted: #555577;
+            --border: rgba(124, 111, 255, 0.12);
+            --border-hover: rgba(124, 111, 255, 0.3);
+            --success: #00d68f;
+            --warning: #ffaa00;
+            --danger: #ff4466;
+            --glass: rgba(18, 18, 42, 0.8);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+            --shadow-md: 0 8px 32px rgba(0,0,0,0.3);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.4);
+            --shadow-glow: 0 0 40px var(--primary-glow);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-gradient .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: orbFloat 20s infinite ease-in-out;
+        }
+
+        .bg-gradient .orb:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .bg-gradient .orb:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            bottom: -50px;
+            left: -80px;
+            animation-delay: -7s;
+        }
+
+        .bg-gradient .orb:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: var(--accent-2);
+            top: 50%;
+            left: 50%;
+            animation-delay: -14s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -40px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(40px, 30px) scale(1.05); }
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(8, 8, 26, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+        }
+
+        .menu-btn:active {
+            background: rgba(124, 111, 255, 0.15);
+            transform: scale(0.92);
+        }
+
+        .menu-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        .welcome-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .welcome-text span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navbar-right {
+            text-align: right;
+        }
+
+        .nav-time {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-white);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .nav-date {
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            max-width: 85vw;
+            height: 100%;
+            height: 100dvh;
+            background: linear-gradient(180deg, #10102a 0%, var(--bg-main) 100%);
+            z-index: 201;
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            padding: 28px 24px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-avatar {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(124, 111, 255, 0.3);
+        }
+
+        .sidebar-user-info h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .sidebar-user-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .sidebar-close {
+            position: absolute;
+            top: 20px;
+            right: 16px;
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .sidebar-close:active {
+            background: rgba(255,255,255,0.1);
+            transform: scale(0.9);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .sidebar-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            font-weight: 700;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .sidebar-item:active {
+            transform: scale(0.97);
+        }
+
+        .sidebar-item.active,
+        .sidebar-item:hover {
+            background: rgba(124, 111, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .sidebar-item .s-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-item.active .s-icon {
+            background: rgba(124, 111, 255, 0.15);
+        }
+
+        .sidebar-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-wrap {
+            position: relative;
+            z-index: 1;
+            margin-top: 64px;
+            padding: 20px 16px 100px;
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: pageIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== HOME PAGE ===== */
+        .home-greeting {
+            padding: 32px 4px 8px;
+        }
+
+        .home-greeting .greeting-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .home-greeting h1 {
+            font-size: 30px;
+            font-weight: 900;
+            color: var(--text-white);
+            line-height: 1.2;
+        }
+
+        .home-greeting h1 span {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--accent-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .home-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            transition: all 0.3s;
+            animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .stat-card .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card:nth-child(1) .stat-icon {
+            background: rgba(124, 111, 255, 0.15);
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: rgba(255, 107, 157, 0.15);
+        }
+
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-white);
+        }
+
+        .stat-card .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            padding-left: 4px;
+        }
+
+        .app-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .app-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .app-card:nth-child(1) { animation-delay: 0.15s; }
+        .app-card:nth-child(2) { animation-delay: 0.25s; }
+
+        .app-card:active {
+            transform: scale(0.97);
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 60%, rgba(124, 111, 255, 0.05));
+            pointer-events: none;
+        }
+
+        .app-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .app-card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .app-card.payments-card .app-card-icon {
+            background: linear-gradient(135deg, rgba(124, 111, 255, 0.2), rgba(124, 111, 255, 0.05));
+        }
+
+        .app-card.tasks-card .app-card-icon {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(255, 107, 157, 0.05));
+        }
+
+        .app-card-arrow {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .app-card:active .app-card-arrow {
+            background: var(--primary);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .app-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 6px;
+        }
+
+        .app-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .app-card-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .app-card.payments-card .app-card-badge {
+            background: rgba(124, 111, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .app-card.tasks-card .app-card-badge {
+            background: rgba(255, 107, 157, 0.1);
+            color: var(--accent);
+        }
+
+        /* ===== SUBPAGE HEADER ===== */
+        .subpage-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding: 4px 0;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .back-btn:active {
+            transform: scale(0.9);
+            background: var(--bg-elevated);
+        }
+
+        .subpage-title-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .subpage-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .subpage-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .edit-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .edit-btn:active {
+            transform: scale(0.9);
+            background: rgba(124, 111, 255, 0.1);
+            color: var(--primary);
+        }
+
+        /* ===== MONTH PICKER ===== */
+        .month-picker {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 0 16px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: x mandatory;
+        }
+
+        .month-picker::-webkit-scrollbar {
+            display: none;
+        }
+
+        .month-chip {
+            flex-shrink: 0;
+            padding: 10px 18px;
+            border-radius: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            scroll-snap-align: center;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .month-chip:active {
+            transform: scale(0.95);
+        }
+
+        .month-chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 16px rgba(124, 111, 255, 0.4);
+        }
+
+        /* ===== SUMMARY BANNER ===== */
+        .summary-banner {
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-banner.payments-banner {
+            background: linear-gradient(135deg, #2a1f6e 0%, #1a1245 100%);
+            border: 1px solid rgba(124, 111, 255, 0.2);
+        }
+
+        .summary-banner.tasks-banner {
+            background: linear-gradient(135deg, #4a1942 0%, #2a1035 100%);
+            border: 1px solid rgba(255, 107, 157, 0.2);
+        }
+
+        .summary-banner::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .summary-banner.payments-banner::before {
+            background: var(--primary);
+        }
+
+        .summary-banner.tasks-banner::before {
+            background: var(--accent);
+        }
+
+        .summary-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .summary-value {
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+            line-height: 1.1;
+        }
+
+        .summary-sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .summary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row .summary-banner {
+            margin-bottom: 0;
+        }
+
+        .summary-row .summary-value {
+            font-size: 28px;
+        }
+
+        /* ===== ADD FORM ===== */
+        .add-form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .form-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(124, 111, 255, 0.1);
+            border: none;
+            color: var(--primary);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .form-toggle.open {
+            transform: rotate(45deg);
+            background: rgba(255, 68, 102, 0.1);
+            color: var(--danger);
+        }
+
+        .form-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .form-body.open {
+            max-height: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.25s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 111, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '▾';
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .select-wrapper select.form-input {
+            padding-right: 36px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 4px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn.payments-btn {
+            background: linear-gradient(135deg, var(--primary), #5a4fd4);
+        }
+
+        .submit-btn.tasks-btn {
+            background: linear-gradient(135deg, var(--accent), #d44a7a);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.97);
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+        }
+
+        /* ===== RECORDS LIST ===== */
+        .records-section {
+            margin-top: 8px;
+        }
+
+        .records-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .records-title h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .records-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .record-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.2s;
+            animation: cardIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .record-item:active {
+            transform: scale(0.98);
+        }
+
+        .record-dot {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .record-dot.payment-dot {
+            background: rgba(124, 111, 255, 0.12);
+        }
+
+        .record-dot.task-dot-pending {
+            background: rgba(255, 170, 0, 0.12);
+        }
+
+        .record-dot.task-dot-completed {
+            background: rgba(0, 214, 143, 0.12);
+        }
+
+        .record-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .record-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .record-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .meta-tag.time-morning {
+            background: rgba(255, 183, 77, 0.12);
+            color: #ffb74d;
+        }
+
+        .meta-tag.time-afternoon {
+            background: rgba(255, 152, 0, 0.12);
+            color: #ffa726;
+        }
+
+        .meta-tag.time-evening {
+            background: rgba(186, 104, 200, 0.12);
+            color: #ba68c8;
+        }
+
+        .meta-tag.time-night {
+            background: rgba(100, 130, 255, 0.12);
+            color: #8c9eff;
+        }
+
+        .meta-tag.status-completed {
+            background: rgba(0, 214, 143, 0.12);
+            color: var(--success);
+        }
+
+        .meta-tag.status-pending {
+            background: rgba(255, 170, 0, 0.12);
+            color: var(--warning);
+        }
+
+        .meta-date {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .record-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .record-amount {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        .delete-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 68, 102, 0.08);
+            border: none;
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .delete-btn:active {
+            transform: scale(0.85);
+            opacity: 1;
+            background: rgba(255, 68, 102, 0.2);
+        }
+
+        .record-item.completed-task {
+            opacity: 0.6;
+        }
+
+        .record-item.completed-task .record-name {
+            text-decoration: line-through;
+            text-decoration-color: var(--text-muted);
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+        }
+
+        .empty-state .empty-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
+
+        .empty-state h4 {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 500;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-lg) var(--radius-lg) var(--radius-md) var(--radius-md);
+            width: 100%;
+            max-width: 420px;
+            padding: 28px 24px 24px;
+            animation: modalIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--border);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 4px;
+            margin: 0 auto 20px;
+            opacity: 0.3;
+        }
+
+        .modal h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 18px;
+        }
+
+        .modal .form-input {
+            margin-bottom: 18px;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .modal-actions button {
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-actions button:active {
+            transform: scale(0.96);
+        }
+
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+        }
+
+        .btn-save {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            padding: 14px 24px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 600;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            white-space: nowrap;
+            max-width: 90vw;
+            text-align: center;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== FOOTER ===== */
+        .page-footer {
+            text-align: center;
+            padding: 32px 20px 16px;
+            margin-top: 24px;
+        }
+
+        .page-footer p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .page-footer span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ===== DELETE CONFIRM ===== */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px);
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px 24px;
+            text-align: center;
+            width: 100%;
+            max-width: 340px;
+            animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .confirm-box .confirm-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .confirm-box h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 8px;
+        }
+
+        .confirm-box p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .confirm-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .confirm-actions button {
+            padding: 13px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .confirm-actions button:active {
+            transform: scale(0.95);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 768px) {
+            .main-wrap {
+                max-width: 580px;
+            }
+
+            .app-grid {
+                flex-direction: row;
+            }
+
+            .app-card {
+                flex: 1;
+            }
+
+            .home-greeting h1 {
+                font-size: 36px;
+            }
+
+            .modal-overlay {
+                align-items: center;
+            }
+
+            .modal {
+                border-radius: var(--radius-lg);
+            }
+        }
+
+        @media (max-width: 380px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-value {
+                font-size: 28px;
+            }
+        }
+
+        /* Chrome date input fix */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.6) sepia(1) hue-rotate(200deg);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMATED BACKGROUND -->
+    <div class="bg-gradient">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+            </button>
+            <div class="welcome-text">Welcome, <span>Adithya</span></div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-time" id="navTime">00:00:00</div>
+            <div class="nav-date" id="navDate">Loading...</div>
+        </div>
+    </nav>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+        <div class="sidebar-header">
+            <div class="sidebar-avatar">A</div>
+            <div class="sidebar-user-info">
+                <h3>Adithya</h3>
+                <p>Personal Workspace</p>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-label">Navigation</div>
+            <button class="sidebar-item active" id="nav-home" onclick="goTo('home')">
+                <div class="s-icon">🏠</div>
+                Home
+            </button>
+            <div class="sidebar-label" style="margin-top:12px">Your Apps</div>
+            <button class="sidebar-item" id="nav-payments" onclick="goTo('payments')">
+                <div class="s-icon">💰</div>
+                <span id="sidePayName">Monthly Payments</span>
+            </button>
+            <button class="sidebar-item" id="nav-tasks" onclick="goTo('tasks')">
+                <div class="s-icon">📋</div>
+                <span id="sideTaskName">Task Records</span>
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            Made with ❤️ by Adithya
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrap">
+
+        <!-- ========== HOME PAGE ========== -->
+        <div class="page active" id="page-home">
+            <div class="home-greeting">
+                <div class="greeting-sub" id="greetingSub">Good morning ☀️</div>
+                <h1>What's on your<br><span>mind today?</span></h1>
+            </div>
+
+            <div class="home-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-value" id="homePayTotal">₹0</div>
+                    <div class="stat-label">This Month Spend</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-value" id="homeTaskPending">0</div>
+                    <div class="stat-label">Pending Tasks</div>
+                </div>
+            </div>
+
+            <div class="section-label">Your Apps</div>
+            <div class="app-grid">
+                <div class="app-card payments-card" onclick="goTo('payments')">
+                    <div class="app-card-top">
+                        <div class="app-card-icon">💰</div>
+                        <div class="app-card-arrow">→</div>
+                    </div>
+                    <h3 id="homePayName">Monthly Payments</h3>
+                    <p>Track bills, subscriptions & expenses</p>
+                    <div class="app-card-badge" id="homePayBadge">0 records</div>
+                </div>
+                <div class="app-card tasks-card" onclick="goTo('tasks')">
+                    <div class="app-card-top">
+                        <div class="app-card-icon">📋</div>
+                        <div class="app-card-arrow">→</div>
+                    </div>
+                    <h3 id="homeTaskName">Task Records</h3>
+                    <p>Organize daily tasks & track progress</p>
+                    <div class="app-card-badge" id="homeTaskBadge">0 tasks</div>
+                </div>
+            </div>
+
+            <div class="page-footer">
+                <p>Created by <span>Adithya</span></p>
+            </div>
+        </div>
+
+        <!-- ========== PAYMENTS PAGE ========== -->
+        <div class="page" id="page-payments">
+            <div class="subpage-header">
+                <button class="back-btn" onclick="goTo('home')">←</button>
+                <div class="subpage-title-wrap">
+                    <div class="subpage-title" id="payTitle">Monthly Payments</div>
+                    <div class="subpage-subtitle">Manage your expenses</div>
+                </div>
+                <button class="edit-btn" onclick="editName('payments')">✏️</button>
+            </div>
+
+            <!-- Month Chips -->
+            <div class="month-picker" id="payMonthPicker"></div>
+
+            <!-- Summary -->
+            <div class="summary-banner payments-banner">
+                <div class="summary-label">Total Spending</div>
+                <div class="summary-value" id="payTotalValue">₹0</div>
+                <div class="summary-sub" id="payTotalSub">0 payments this month</div>
+            </div>
+
+            <!-- Add Form -->
+            <div class="add-form-card">
+                <div class="form-header">
+                    <h3>✨ New Payment</h3>
+                    <button class="form-toggle" id="payFormToggle" onclick="toggleForm('pay')">+</button>
+                </div>
+                <div class="form-body" id="payFormBody">
+                    <div class="form-group">
+                        <label>Payment Name</label>
+                        <input type="text" class="form-input" id="payInputName" placeholder="e.g., Electricity Bill">
+                    </div>
+                    <div class="form-group">
+                        <label>Amount (₹)</label>
+                        <input type="number" class="form-input" id="payInputAmount" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                    <button class="submit-btn payments-btn" onclick="addPayment()">
+                        💰 Add Payment
+                    </button>
+                </div>
+            </div>
+
+            <!-- Records -->
+            <div class="records-section">
+                <div class="records-title">
+                    <h3>Records</h3>
+                    <span class="records-count" id="payRecordCount">0 items</span>
+                </div>
+                <div id="payList"></div>
+            </div>
+
+            <div class="page-footer">
+                <p>Created by <span>Adithya</span></p>
+            </div>
+        </div>
+
+        <!-- ========== TASKS PAGE ========== -->
+        <div class="page" id="page-tasks">
+            <div class="subpage-header">
+                <button class="back-btn" onclick="goTo('home')">←</button>
+                <div class="subpage-title-wrap">
+                    <div class="subpage-title" id="taskTitle">Task Records</div>
+                    <div class="subpage-subtitle">Stay organized & productive</div>
+                </div>
+                <button class="edit-btn" onclick="editName('tasks')">✏️</button>
+            </div>
+
+            <!-- Month Chips -->
+            <div class="month-picker" id="taskMonthPicker"></div>
+
+            <!-- Summary -->
+            <div class="summary-row">
+                <div class="summary-banner tasks-banner">
+                    <div class="summary-label">Total Tasks</div>
+                    <div class="summary-value" id="taskTotalVal">0</div>
+                </div>
+                <div class="summary-banner payments-banner">
+                    <div class="summary-label">Completed</div>
+                    <div class="summary-value" id="taskDoneVal">0</div>
+                </div>
+            </div>
+
+            <!-- Add Form -->
+            <div class="add-form-card">
+                <div class="form-header">
+                    <h3>✨ New Task</h3>
+                    <button class="form-toggle" id="taskFormToggle" onclick="toggleForm('task')">+</button>
+                </div>
+                <div class="form-body" id="taskFormBody">
+                    <div class="form-group">
+                        <label>Task Name</label>
+                        <input type="text" class="form-input" id="taskInputName" placeholder="e.g., Team Meeting">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" class="form-input" id="taskInputDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Time Period</label>
+                            <div class="select-wrapper">
+                                <select class="form-input" id="taskInputTime">
+                                    <option value="Morning">🌅 Morning</option>
+                                    <option value="Afternoon">☀️ Afternoon</option>
+                                    <option value="Evening">🌇 Evening</option>
+                                    <option value="Night">🌙 Night</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="submit-btn tasks-btn" onclick="addTask()">
+                        📋 Add Task
+                    </button>
+                </div>
+            </div>
+
+            <!-- Records -->
+            <div class="records-section">
+                <div class="records-title">
+                    <h3>Tasks</h3>
+                    <span class="records-count" id="taskRecordCount">0 tasks</span>
+                </div>
+                <div id="taskList"></div>
+            </div>
+
+            <div class="page-footer">
+                <p>Created by <span>Adithya</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT NAME MODAL -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <h3>✏️ Rename App</h3>
+            <input type="text" class="form-input" id="editInput" placeholder="Enter new name">
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button class="btn-save" onclick="saveEditName()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRM -->
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-box">
+            <div class="confirm-icon">🗑️</div>
+            <h4>Delete this record?</h4>
+            <p>This action cannot be undone.</p>
+            <div class="confirm-actions">
+                <button class="btn-cancel" onclick="closeConfirm()">Cancel</button>
+                <button class="btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ===== DATA =====
+        const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const MONTH_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+        let data = {
+            payments: [],
+            tasks: [],
+            names: { payments: 'Monthly Payments', tasks: 'Task Records' }
+        };
+
+        let selectedPayMonth, selectedTaskMonth, editingApp = '', deleteCallback = null;
+
+        // ===== INIT =====
+        function init() {
+            loadData();
+            const now = new Date();
+            selectedPayMonth = now.getMonth();
+            selectedTaskMonth = now.getMonth();
+            updateClock();
+            setInterval(updateClock, 1000);
+            buildMonthPickers();
+            updateAllNames();
+            updateGreeting();
+            updateHomeStats();
+            setDefaults();
+        }
+
+        function loadData() {
+            try {
+                const s = localStorage.getItem('myapps_v2');
+                if (s) data = JSON.parse(s);
+                if (!data.names) data.names = { payments: 'Monthly Payments', tasks: 'Task Records' };
+                if (!data.payments) data.payments = [];
+                if (!data.tasks) data.tasks = [];
+            } catch(e) {}
+        }
+
+        function save() {
+            localStorage.setItem('myapps_v2', JSON.stringify(data));
+        }
+
+        function setDefaults() {
+            document.getElementById('taskInputDate').value = new Date().toISOString().split('T')[0];
+        }
+
+        // ===== CLOCK =====
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('navTime').textContent = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12: true });
+            document.getElementById('navDate').textContent = now.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+        }
+
+        // ===== GREETING =====
+        function updateGreeting() {
+            const h = new Date().getHours();
+            let g = 'Good evening 🌇';
+            if (h < 12) g = 'Good morning ☀️';
+            else if (h < 17) g = 'Good afternoon 🌤️';
+            else if (h >= 21) g = 'Good night 🌙';
+            document.getElementById('greetingSub').textContent = g;
+        }
+
+        // ===== SIDEBAR =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
+        // ===== NAVIGATION =====
+        function goTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+
+            document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+            document.getElementById('nav-' + page).classList.add('active');
+
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+
+            if (page === 'payments') renderPayments();
+            if (page === 'tasks') renderTasks();
+            if (page === 'home') updateHomeStats();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== MONTH PICKERS =====
+        function buildMonthPickers() {
+            const currentMonth = new Date().getMonth();
+            let payHTML = '', taskHTML = '';
+
+            MONTHS.forEach((m, i) => {
+                payHTML += `<div class="month-chip ${i === currentMonth ? 'active' : ''}" data-month="${i}" onclick="selectPayMonth(${i})">${m}</div>`;
+                taskHTML += `<div class="month-chip ${i === currentMonth ? 'active' : ''}" data-month="${i}" onclick="selectTaskMonth(${i})">${m}</div>`;
+            });
+
+            document.getElementById('payMonthPicker').innerHTML = payHTML;
+            document.getElementById('taskMonthPicker').innerHTML = taskHTML;
+
+            // Auto scroll to current month
+            setTimeout(() => {
+                scrollToActiveChip('payMonthPicker');
+                scrollToActiveChip('taskMonthPicker');
+            }, 100);
+        }
+
+        function scrollToActiveChip(containerId) {
+            const container = document.getElementById(containerId);
+            const active = container.querySelector('.active');
+            if (active) {
+                active.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+            }
+        }
+
+        function selectPayMonth(m) {
+            selectedPayMonth = m;
+            document.querySelectorAll('#payMonthPicker .month-chip').forEach((c, i) => {
+                c.classList.toggle('active', i === m);
+            });
+            renderPayments();
+        }
+
+        function selectTaskMonth(m) {
+            selectedTaskMonth = m;
+            document.querySelectorAll('#taskMonthPicker .month-chip').forEach((c, i) => {
+                c.classList.toggle('active', i === m);
+            });
+            renderTasks();
+        }
+
+        // ===== FORM TOGGLE =====
+        function toggleForm(type) {
+            const body = document.getElementById(type + 'FormBody');
+            const btn = document.getElementById(type + 'FormToggle');
+            body.classList.toggle('open');
+            btn.classList.toggle('open');
+        }
+
+        // ===== PAYMENTS =====
+        function addPayment() {
+            const name = document.getElementById('payInputName').value.trim();
+            const amount = parseFloat(document.getElementById('payInputAmount').value);
+
+            if (!name) return toast('⚠️ Enter payment name');
+            if (!amount || amount <= 0) return toast('⚠️ Enter valid amount');
+
+            const year = new Date().getFullYear();
+            data.payments.push({
+                id: Date.now(),
+                name, amount,
+                month: selectedPayMonth,
+                year,
+                created: new Date().toISOString()
+            });
+            save();
+            document.getElementById('payInputName').value = '';
+            document.getElementById('payInputAmount').value = '';
+            renderPayments();
+            toast('✅ Payment added!');
+        }
+
+        function renderPayments() {
+            const year = new Date().getFullYear();
+            const list = data.payments.filter(p => p.month === selectedPayMonth && p.year === year);
+            const total = list.reduce((s, p) => s + p.amount, 0);
+
+            document.getElementById('payTotalValue').textContent = '₹' + total.toLocaleString('en-IN');
+            document.getElementById('payTotalSub').textContent = list.length + ' payment' + (list.length !== 1 ? 's' : '') + ' in ' + MONTH_FULL[selectedPayMonth];
+            document.getElementById('payRecordCount').textContent = list.length + ' item' + (list.length !== 1 ? 's' : '');
+
+            const container = document.getElementById('payList');
+
+            if (!list.length) {
+                container.innerHTML = `<div class="empty-state"><div class="empty-icon">💸</div><h4>No payments yet</h4><p>Add your first payment for ${MONTH_FULL[selectedPayMonth]}</p></div>`;
+                return;
+            }
+
+            container.innerHTML = list.sort((a, b) => b.id - a.id).map((p, i) => {
+                const d = new Date(p.created).toLocaleDateString('en-IN', { day:'numeric', month:'short' });
+                return `<div class="record-item" style="animation-delay:${i * 0.05}s">
+                    <div class="record-dot payment-dot">💳</div>
+                    <div class="record-info">
+                        <div class="record-name">${esc(p.name)}</div>
+                        <div class="record-meta"><span class="meta-date">📅 ${d}</span></div>
+                    </div>
+                    <div class="record-right">
+                        <div class="record-amount">₹${p.amount.toLocaleString('en-IN')}</div>
+                        <button class="delete-btn" onclick="askDelete('payment',${p.id})">✕</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // ===== TASKS =====
+        function addTask() {
+            const name = document.getElementById('taskInputName').value.trim();
+            const date = document.getElementById('taskInputDate').value;
+            const time = document.getElementById('taskInputTime').value;
+
+            if (!name) return toast('⚠️ Enter task name');
+            if (!date) return toast('⚠️ Select a date');
+
+            const taskMonth = new Date(date).getMonth();
+
+            data.tasks.push({
+                id: Date.now(),
+                name, date, timePeriod: time,
+                month: taskMonth,
+                created: new Date().toISOString()
+            });
+            save();
+            document.getElementById('taskInputName').value = '';
+            selectedTaskMonth = taskMonth;
+
+            // Update chip selection
+            document.querySelectorAll('#taskMonthPicker .month-chip').forEach((c, i) => {
+                c.classList.toggle('active', i === taskMonth);
+            });
+            scrollToActiveChip('taskMonthPicker');
+
+            renderTasks();
+            toast('✅ Task added!');
+        }
+
+        function isPast(dateStr) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const d = new Date(dateStr);
+            d.setHours(0, 0, 0, 0);
+            return d < today;
+        }
+
+        function renderTasks() {
+            const list = data.tasks.filter(t => t.month === selectedTaskMonth);
+            const done = list.filter(t => isPast(t.date)).length;
+
+            document.getElementById('taskTotalVal').textContent = list.length;
+            document.getElementById('taskDoneVal').textContent = done;
+            document.getElementById('taskRecordCount').textContent = list.length + ' task' + (list.length !== 1 ? 's' : '');
+
+            const container = document.getElementById('taskList');
+
+            if (!list.length) {
+                container.innerHTML = `<div class="empty-state"><div class="empty-icon">📝</div><h4>No tasks yet</h4><p>Add your first task for ${MONTH_FULL[selectedTaskMonth]}</p></div>`;
+                return;
+            }
+
+            const sorted = [...list].sort((a, b) => {
+                const ac = isPast(a.date), bc = isPast(b.date);
+                if (ac !== bc) return ac ? 1 : -1;
+                return new Date(a.date) - new Date(b.date);
+            });
+
+            const timeEmojis = { Morning:'🌅', Afternoon:'☀️', Evening:'🌇', Night:'🌙' };
+
+            container.innerHTML = sorted.map((t, i) => {
+                const completed = isPast(t.date);
+                const dateStr = new Date(t.date).toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
+                const timeClass = 'time-' + t.timePeriod.toLowerCase();
+
+                return `<div class="record-item ${completed ? 'completed-task' : ''}" style="animation-delay:${i * 0.05}s">
+                    <div class="record-dot ${completed ? 'task-dot-completed' : 'task-dot-pending'}">${completed ? '✅' : '⏳'}</div>
+                    <div class="record-info">
+                        <div class="record-name">${esc(t.name)}</div>
+                        <div class="record-meta">
+                            <span class="meta-date">📅 ${dateStr}</span>
+                            <span class="meta-tag ${timeClass}">${timeEmojis[t.timePeriod] || ''} ${t.timePeriod}</span>
+                            <span class="meta-tag ${completed ? 'status-completed' : 'status-pending'}">${completed ? '✓ Done' : '● Pending'}</span>
+                        </div>
+                    </div>
+                    <button class="delete-btn" onclick="askDelete('task',${t.id})">✕</button>
+                </div>`;
+            }).join('');
+        }
+
+        // ===== HOME STATS =====
+        function updateHomeStats() {
+            const now = new Date();
+            const curMonth = now.getMonth();
+            const curYear = now.getFullYear();
+
+            const monthPayments = data.payments.filter(p => p.month === curMonth && p.year === curYear);
+            const totalPay = monthPayments.reduce((s, p) => s + p.amount, 0);
+            document.getElementById('homePayTotal').textContent = '₹' + totalPay.toLocaleString('en-IN');
+
+            const pendingTasks = data.tasks.filter(t => !isPast(t.date)).length;
+            document.getElementById('homeTaskPending').textContent = pendingTasks;
+
+            document.getElementById('homePayBadge').textContent = monthPayments.length + ' record' + (monthPayments.length !== 1 ? 's' : '');
+            document.getElementById('homeTaskBadge').textContent = data.tasks.length + ' task' + (data.tasks.length !== 1 ? 's' : '');
+        }
+
+        // ===== EDIT NAME =====
+        function editName(app) {
+            editingApp = app;
+            document.getElementById('editInput').value = data.names[app];
+            document.getElementById('editModal').classList.add('active');
+            setTimeout(() => document.getElementById('editInput').focus(), 100);
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function saveEditName() {
+            const v = document.getElementById('editInput').value.trim();
+            if (!v) return toast('⚠️ Name cannot be empty');
+            data.names[editingApp] = v;
+            save();
+            updateAllNames();
+            closeEditModal();
+            toast('✅ App renamed!');
+        }
+
+        function updateAllNames() {
+            document.getElementById('payTitle').textContent = data.names.payments;
+            document.getElementById('taskTitle').textContent = data.names.tasks;
+            document.getElementById('homePayName').textContent = data.names.payments;
+            document.getElementById('homeTaskName').textContent = data.names.tasks;
+            document.getElementById('sidePayName').textContent = data.names.payments;
+            document.getElementById('sideTaskName').textContent = data.names.tasks;
+        }
+
+        // ===== DELETE CONFIRM =====
+        function askDelete(type, id) {
+            deleteCallback = () => {
+                if (type === 'payment') {
+                    data.payments = data.payments.filter(p => p.id !== id);
+                    save();
+                    renderPayments();
+                } else {
+                    data.tasks = data.tasks.filter(t => t.id !== id);
+                    save();
+                    renderTasks();
+                }
+                toast('🗑️ Deleted!');
+            };
+            document.getElementById('confirmOverlay').classList.add('active');
+        }
+
+        function confirmDelete() {
+            if (deleteCallback) deleteCallback();
+            closeConfirm();
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmOverlay').classList.remove('active');
+            deleteCallback = null;
+        }
+
+        // ===== UTILS =====
+        function esc(t) {
+            const d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
+        }
+
+        function toast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 2800);
+        }
+
+        // Keyboard support for modal
+        document.getElementById('editInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter') saveEditName();
+        });
+
+        // Check task completion every minute
+        setInterval(() => {
+            if (document.getElementById('page-tasks').classList.contains('active')) renderTasks();
+        }, 60000);
+
+        // Start
+        init();
+    </script>
+</body>
+</html>
